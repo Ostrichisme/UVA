@@ -1,0 +1,152 @@
+#include<iostream>
+#include<cstdlib>
+#include<iomanip>
+#include<cstring>
+using namespace std;
+int num[8][8],queen[8][8],max1;
+void traceback(int x,int ans)
+{
+     if(x==8)
+    {
+        if(ans>max1)
+        max1=ans;
+        return;
+    }
+    for(int y=0;y<8;y++)
+    {
+        int flag=0,i,temp;
+        for(i=0;i<y;i++)
+        {
+            if(queen[x][i]==1)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==1)
+        {
+            queen[x][y]=0;
+            continue;
+        }
+        for(i=y+1;i<8;i++)
+        {
+            if(queen[x][i]==1)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==1)
+        {
+            queen[x][y]=0;
+            continue;
+        }
+        for(i=0;i<x;i++)
+        {
+            if(queen[i][y]==1)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==1)
+        {
+            queen[x][y]=0;
+            continue;
+        }
+        for(i=x+1;i<8;i++)
+        {
+            if(queen[i][y]==1)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==1)
+        {
+            queen[x][y]=0;
+            continue;
+        }
+        temp=y-1;
+    for(i=x-1;i>=0;i--)
+    {
+        if(temp<0)
+        break;
+        if(queen[i][temp]==1)
+        {
+            flag=1;
+            break;
+        }
+        temp--;
+    }
+    if(flag==1)
+        continue;
+    temp=y+1;
+    for(i=x+1;i<8;i++)
+    {
+        if(temp>7)
+        break;
+        if(queen[i][temp]==1)
+        {
+            flag=1;
+            break;
+        }
+        temp++;
+    }
+    if(flag==1)
+    continue;
+    temp=y+1;
+    for(i=x-1;i>=0;i--)
+    {
+        if(temp>7)
+        break;
+        if(queen[i][temp]==1)
+        {
+            flag=1;
+            break;
+        }
+        temp++;
+    }
+    if(flag==1)
+    continue;
+    temp=y-1;
+    for(i=x+1;i<8;i++)
+    {
+        if(temp<0)
+        break;
+        if(queen[i][temp]==1)
+        {
+            flag=1;
+            break;
+        }
+        temp--;
+    }
+    if(flag==1)
+    continue;
+
+    queen[x][y]=1;
+    traceback(x+1,ans+num[x][y]);
+    queen[x][y]=0;
+    }
+
+}
+int main()
+{
+    int test;
+    cin>>test;
+    while(test--)
+    {
+        max1=0;
+        for(int x=0;x<8;x++)
+        for(int y=0;y<8;y++)
+        cin>>num[x][y];
+        for(int i=0;i<8;i++)
+        {
+            queen[0][i]=1;
+            traceback(1,num[0][i]);
+            queen[0][i]=0;
+        }
+        cout<<setw(5)<<max1<<endl;
+        //system("pause");
+    }
+}
